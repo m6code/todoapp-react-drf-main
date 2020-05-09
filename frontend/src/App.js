@@ -22,7 +22,7 @@ export class App extends React.Component {
 
     this.startEdit = this.startEdit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-    //this.strikeUnstrike = this.strikeUnstrike.bind(this);
+    this.strikeUnstrike = this.strikeUnstrike.bind(this);
 
   }
 
@@ -60,16 +60,16 @@ export class App extends React.Component {
       )
   }
 
-  deleteItem(task){
+  deleteItem(task) {
     var csrftoken = this.getCookie('csrftoken')
     // fetch(`fetch("https://todoapp-react-drf.herokuapp.com/api/task-delete/${task.id}`, {
     fetch(`http://127.0.0.1:8000/api/task-delete/${task.id}/`, {
-      method:'DELETE',
-      headers:{
-        'Content-type':'application/json',
-        'X-CSRFToken':csrftoken,
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken,
       },
-    }).then((response) =>{
+    }).then((response) => {
 
       this.fetchTasks()
     })
@@ -134,6 +134,27 @@ export class App extends React.Component {
     })
   }
 
+  strikeUnstrike(task){
+
+    task.completed = !task.completed;
+    var csrftoken = this.getCookie('csrftoken');
+
+    //var url = `https://todoapp-react-drf.herokuapp.com/api/task-update/${task.id}`
+    var url = `http://127.0.0.1:8000/api/task-update/${task.id}/`
+
+      fetch(url, {
+        method:'POST',
+        headers:{
+          'Content-type':'application/json',
+          'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({'completed': task.completed, 'title':task.title})
+      }).then(() => {
+        this.fetchTasks();
+      })
+    console.log("Task completed? ", task.completed);
+  }
+
   render() {
     var tasks = this.state.todoList;
     var self = this;
@@ -145,7 +166,7 @@ export class App extends React.Component {
             <form id="form" onSubmit={this.handleSubmit}>
               <div className="flex-wrapper">
                 <div style={{ flex: 6 }}>
-                  <input onChange={this.handleChange} className="from-control" id="title" value={this.state.activeItem.title} type="text" name="title" placeholder="Enter a task..." />
+                  <input onChange={this.handleChange} className="from-control" id="title" value={this.state.activeItem.title} type="text" name="title" placeholder="Enter a task..." required />
                 </div>
 
                 <div style={{ flex: 1 }}>
@@ -160,8 +181,14 @@ export class App extends React.Component {
             {tasks.map((task, index) => {
               return (
                 <div key={index} className="task-wrapper flex-wrapper">
-                  <div style={{ flex: 7 }}>
-                    <span>{task.title}</span>
+
+                  <div onClick={() => self.strikeUnstrike(task)} style={{ flex: 7 }}>
+                    {!task.completed ? (
+                      <span>{task.title}</span>
+                    ) : (
+                      <span><strike>{task.title}</strike></span>
+                    )}
+                    
                   </div>
                   <div style={{ flex: 1 }}>
                     <button onClick={() => self.startEdit(task)} className="btn btn-sm btn-outline-info">Edit</button>
