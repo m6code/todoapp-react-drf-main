@@ -20,6 +20,8 @@ export class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getCookie = this.getCookie.bind(this);
 
+    this.startEdit = this.startEdit.bind(this)
+
   }
 
   getCookie(name) {
@@ -76,6 +78,16 @@ export class App extends React.Component {
 
     // var url = "https://todoapp-react-drf.herokuapp.com/api/task-create";
     var url = 'http://127.0.0.1:8000/api/task-create/'
+
+    if (this.state.editing) {
+      // var = `https://todoapp-react-drf.herokuapp.com/api/task-update/${this.state.activeItem.id}/`
+      url = `http://127.0.0.1:8000/api/task-update/${this.state.activeItem.id}/`
+      this.setState({
+        editing:false,
+      })
+    }
+
+
     // Make POST request to our backend
     fetch(url, {
       method: 'POST',
@@ -98,8 +110,17 @@ export class App extends React.Component {
     })
   }
 
+
+  startEdit(task) {
+    this.setState({
+      activeItem: task,
+      editing: true,
+    })
+  }
+
   render() {
-    let tasks = this.state.todoList;
+    var tasks = this.state.todoList;
+    var self = this;
     return (
       <div className="container">
 
@@ -127,7 +148,7 @@ export class App extends React.Component {
                     <span>{task.title}</span>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <button className="btn btn-sm btn-outline-info">Edit </button>
+                    <button onClick={() => self.startEdit(task)} className="btn btn-sm btn-outline-info">Edit</button>
                   </div>
                   <div style={{ flex: 1 }}>
                     <button className="btn btn-sm btn-outline-dark delete">-</button>
