@@ -5,39 +5,43 @@ export class App extends React.Component {
 
   constructor(props) {
     super(props)
-  
+
     this.state = {
-       todoList: [],
-       activeItem: {
-         id: null,
-         title: "",
-         completed: false,
-       },
-       editing: false,
+      todoList: [],
+      activeItem: {
+        id: null,
+        title: "",
+        completed: false,
+      },
+      editing: false,
     }
     this.fetchTasks = this.fetchTasks.bind(this)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchTasks()
   }
 
-  fetchTasks(){
+  fetchTasks() {
     console.log('fetching........')
+    //TODO: change this to the heroku address before uploading
+    //fetch("https://todoapp-react-drf.herokuapp.com/api/task-list/")
     fetch("http://127.0.0.1:8000/api/task-list/")
-    .then(response => response.json())
-    .then(data => 
-      console.log("Data: ", data)
+      .then(response => response.json())
+      .then(data =>
+        //console.log("Data: ", data)
+        this.setState({
+          todoList: data
+        })
       )
   }
-  
-
 
   render() {
+    let tasks = this.state.todoList;
     return (
       <div className="container">
 
-        <div className="task-container">
+        <div id="task-container">
           <div id="form-wrapper">
             <form id="form">
               <div className="flex-wrapper">
@@ -54,7 +58,21 @@ export class App extends React.Component {
           </div>
 
           <div id="list-wrapper">
-
+            {tasks.map((task, index) => {
+              return (
+                <div key={index} className="task-wrapper flex-wrapper">
+                  <div style={{ flex: 7 }}>
+                    <span>{task.title}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <button className="btn btn-sm btn-outline-info">Edit </button>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <button className="btn btn-sm btn-outline-dark delete">-</button>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
