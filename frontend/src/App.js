@@ -49,8 +49,8 @@ export class App extends React.Component {
   fetchTasks() {
     console.log('fetching........')
     //TODO: change this to the heroku address before uploading
-    //fetch("https://todoapp-react-drf.herokuapp.com/api/task-list/")
-    fetch("http://127.0.0.1:8000/api/task-list/")
+    fetch("https://todoapp-react-drf.herokuapp.com/api/task-list/")
+    //fetch("http://127.0.0.1:8000/api/task-list/")
       .then(response => response.json())
       .then(data =>
         //console.log("Data: ", data)
@@ -62,8 +62,8 @@ export class App extends React.Component {
 
   deleteItem(task) {
     var csrftoken = this.getCookie('csrftoken')
-    // fetch(`fetch("https://todoapp-react-drf.herokuapp.com/api/task-delete/${task.id}`, {
-    fetch(`http://127.0.0.1:8000/api/task-delete/${task.id}/`, {
+    fetch(`https://todoapp-react-drf.herokuapp.com/api/task-delete/${task.id}/`, {
+    // fetch(`http://127.0.0.1:8000/api/task-delete/${task.id}/`, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
@@ -92,12 +92,12 @@ export class App extends React.Component {
 
     var csrftoken = this.getCookie('csrftoken');
 
-    // var url = "https://todoapp-react-drf.herokuapp.com/api/task-create";
-    var url = 'http://127.0.0.1:8000/api/task-create/'
+    var url = "https://todoapp-react-drf.herokuapp.com/api/task-create/";
+    // var url = 'http://127.0.0.1:8000/api/task-create/'
 
     if (this.state.editing) {
-      // var = `https://todoapp-react-drf.herokuapp.com/api/task-update/${this.state.activeItem.id}/`
-      url = `http://127.0.0.1:8000/api/task-update/${this.state.activeItem.id}/`
+      url = `https://todoapp-react-drf.herokuapp.com/api/task-update/${this.state.activeItem.id}/`
+      // url = `http://127.0.0.1:8000/api/task-update/${this.state.activeItem.id}/`
       this.setState({
         editing: false,
       })
@@ -139,8 +139,8 @@ export class App extends React.Component {
     task.completed = !task.completed;
     var csrftoken = this.getCookie('csrftoken');
 
-    //var url = `https://todoapp-react-drf.herokuapp.com/api/task-update/${task.id}`
-    var url = `http://127.0.0.1:8000/api/task-update/${task.id}/`
+    var url = `https://todoapp-react-drf.herokuapp.com/api/task-update/${task.id}/`
+    //var url = `http://127.0.0.1:8000/api/task-update/${task.id}/`
 
       fetch(url, {
         method:'POST',
