@@ -20,7 +20,9 @@ export class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getCookie = this.getCookie.bind(this);
 
-    this.startEdit = this.startEdit.bind(this)
+    this.startEdit = this.startEdit.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    //this.strikeUnstrike = this.strikeUnstrike.bind(this);
 
   }
 
@@ -58,11 +60,25 @@ export class App extends React.Component {
       )
   }
 
+  deleteItem(task){
+    var csrftoken = this.getCookie('csrftoken')
+    // fetch(`fetch("https://todoapp-react-drf.herokuapp.com/api/task-delete/${task.id}`, {
+    fetch(`http://127.0.0.1:8000/api/task-delete/${task.id}/`, {
+      method:'DELETE',
+      headers:{
+        'Content-type':'application/json',
+        'X-CSRFToken':csrftoken,
+      },
+    }).then((response) =>{
+
+      this.fetchTasks()
+    })
+  }
+
   handleChange(e) {
-    let name = e.target.name;
-    let value = e.target.value;
-    // console.log("Name: ", name);
-    // console.log("Value: ", value);
+    //eslint-disable-next-line
+    var name = e.target.name;
+    var value = e.target.value;
     this.setState({
       activeItem: {
         ...this.state.activeItem,
@@ -83,7 +99,7 @@ export class App extends React.Component {
       // var = `https://todoapp-react-drf.herokuapp.com/api/task-update/${this.state.activeItem.id}/`
       url = `http://127.0.0.1:8000/api/task-update/${this.state.activeItem.id}/`
       this.setState({
-        editing:false,
+        editing: false,
       })
     }
 
@@ -151,7 +167,7 @@ export class App extends React.Component {
                     <button onClick={() => self.startEdit(task)} className="btn btn-sm btn-outline-info">Edit</button>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <button className="btn btn-sm btn-outline-dark delete">-</button>
+                    <button onClick={() => self.deleteItem(task)} className="btn btn-sm btn-outline-dark delete">-</button>
                   </div>
                 </div>
               )
