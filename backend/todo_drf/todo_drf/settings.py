@@ -137,8 +137,9 @@ STATICFILES_DIRS = (
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
+CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "https://m6code.github.io",
-]
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:3000",
+#     "https://m6code.github.io",
+# ]

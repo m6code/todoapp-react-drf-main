@@ -2,7 +2,7 @@
   "name": "todoapp-react-drf",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://m6code.github.io/todoapp-react-drf-frontend/",
+  "homepage": "",
   "dependencies": {
     "cra-template": "1.0.3",
     "gh-pages": "^2.2.0",
